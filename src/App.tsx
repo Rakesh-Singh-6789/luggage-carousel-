@@ -1,14 +1,20 @@
 import LuggageCarousel from './components/LuggageCarousel'
 import StorageArea from './components/StorageArea'
+import Toast from './components/Toast'
 import { useLuggageManager } from './hooks/useLuggageManager'
 import './App.css'
 
 function App() {
-  const { carouselRef, storedPackages, isUnloading, handlers } = useLuggageManager()
+  const { carouselRef, storedPackages, isUnloading, toast, handlers } = useLuggageManager()
 
   return (
     <div className="app">
       <div className="outer-box">
+        <Toast 
+          message={toast.message}
+          isVisible={toast.isVisible}
+          onClose={toast.hideToast}
+        />
         <h1>Luggage Carousel</h1>
         <div className="main-container">
           <LuggageCarousel 

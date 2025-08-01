@@ -12,9 +12,8 @@ interface StorageAreaProps {
 const StorageArea = ({ storedPackages, isUnloading, onPackageStored, onDropSuccess, onUnload }: StorageAreaProps) => {
 
   const handlePackageDrop = (slotIndex: number, packageId: string) => {
-    // Notify parent about the successful drop attempt
+    // Always notify parent about the drop attempt - let the manager handle validation and toasts
     onDropSuccess?.(packageId)
-    // Notify parent to store the package
     onPackageStored?.(slotIndex, packageId)
   }
 

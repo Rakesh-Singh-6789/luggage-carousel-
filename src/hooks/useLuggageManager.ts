@@ -1,5 +1,6 @@
 import { useRef, useCallback, useState, useEffect } from 'react'
 import type { DragItem, DragResult } from '../types/dragTypes'
+import { useToast } from './useToast'
 
 interface LuggageCarouselHandle {
   removePackage: (packageId: string) => void
@@ -15,6 +16,7 @@ export const useLuggageManager = () => {
   const [priorityStack, setPriorityStack] = useState<string[]>([])
   const [regularStack, setRegularStack] = useState<string[]>([])
   const [isUnloading, setIsUnloading] = useState(false)
+  const toast = useToast()
 
   const handlePackageDragStart = useCallback((item: DragItem) => {
     console.log(`drag start: ${item.id}`)
@@ -51,6 +53,13 @@ export const useLuggageManager = () => {
   }, [])
 
   const handlePackageStored = useCallback((slotIndex: number, packageId: string) => {
+    // Check if slot is already occupied
+    if (storedPackages[slotIndex] !== null) {
+      const occupiedByPackage = storedPackages[slotIndex]
+      toast.showToast(`Storage box already occupied by package ${occupiedByPackage}`)
+      return
+    }
+
     console.log(`stored: pkg ${packageId} -> slot ${slotIndex}`)
     
     // Update the main grid
@@ -64,13 +73,15 @@ export const useLuggageManager = () => {
     if (slotIndex >= 0 && slotIndex <= 2) {
       setPriorityStack(prev => [...prev, packageId])
       console.log('pushed to priority stack:', [...priorityStack, packageId])
+      toast.showToast(`Package ${packageId} stored in priority section`)
     } else {
       setRegularStack(prev => [...prev, packageId])
       console.log('pushed to regular stack:', [...regularStack, packageId])
+      toast.showToast(`Package ${packageId} stored successfully`)
     }
     
     carouselRef.current?.removePackage(packageId)
-  }, [priorityStack, regularStack])
+  }, [priorityStack, regularStack, storedPackages, toast])
 
   const unloadSinglePackage = useCallback(() => {
     let packageToUnload: string | undefined;
@@ -134,6 +145,7 @@ export const useLuggageManager = () => {
       unloadTimeoutRef.current = setTimeout(unloadLoop, 1000)
     } else if (isUnloading && priorityStack.length === 0 && regularStack.length === 0) {
       console.log('unload sequence complete')
+      toast.showToast('All luggage unloaded successfully')
       setIsUnloading(false)
       if (unloadTimeoutRef.current) {
         clearTimeout(unloadTimeoutRef.current)
@@ -144,19 +156,26 @@ export const useLuggageManager = () => {
 
   const handleUnload = useCallback(() => {
     if (isUnloading) {
-      console.log('unload already in progress')
+      toast.showToast('Unload already in progress')
+      return
+    }
+
+    if (priorityStack.length === 0 && regularStack.length === 0) {
+      toast.showToast('No luggage in storage area')
       return
     }
 
     console.log('start unload sequence')
+    toast.showToast('Starting unload sequence...')
     setIsUnloading(true)
     // The useEffect will trigger the first unload
-  }, [isUnloading])
+  }, [isUnloading, priorityStack.length, regularStack.length, toast])
 
   return {
     carouselRef,
     storedPackages,
     isUnloading,
+    toast,
     handlers: {
       onPackageDragStart: handlePackageDragStart,
       onPackageDragEnd: handlePackageDragEnd,

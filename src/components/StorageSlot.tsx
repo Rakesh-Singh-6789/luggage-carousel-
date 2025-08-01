@@ -28,11 +28,9 @@ const StorageSlot = ({ isPriority, slotIndex, packageId, onDrop }: StorageSlotPr
     const droppedPackageId = e.dataTransfer.getData('text/plain')
     setIsDragOver(false)
     
-    if (droppedPackageId && !packageId) { // Only drop if slot is empty
-      console.log(`drop success: pkg ${droppedPackageId} -> slot ${slotIndex}`)
+    if (droppedPackageId) {
+      console.log(`drop attempt: pkg ${droppedPackageId} -> slot ${slotIndex}`)
       onDrop?.(slotIndex, droppedPackageId)
-    } else {
-      console.log(`drop fail: slot ${slotIndex} occupied`)
     }
   }
 
