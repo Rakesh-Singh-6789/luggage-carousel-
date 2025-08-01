@@ -145,7 +145,7 @@ export const useLuggageManager = () => {
       unloadTimeoutRef.current = setTimeout(unloadLoop, 1000)
     } else if (isUnloading && priorityStack.length === 0 && regularStack.length === 0) {
       console.log('unload sequence complete')
-      toast.showToast('All luggage unloaded successfully')
+      toast.showToast('All luggages unloaded successfully')
       setIsUnloading(false)
       if (unloadTimeoutRef.current) {
         clearTimeout(unloadTimeoutRef.current)

@@ -1,8 +1,7 @@
-# Luggage Carousel Application
+# Luggage Carousel
+🌐 **Live Demo**: [luggagecarousel.netlify.app](https://luggagecarousel.netlify.app)
 
-A modern React TypeScript application simulating a luggage carousel system with drag-and-drop functionality, storage management, and LIFO unload operations. Built with a clean, minimalistic retro design aesthetic.
-
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 - Node.js 20.x or higher
@@ -35,7 +34,7 @@ A modern React TypeScript application simulating a luggage carousel system with 
 - `npm run preview` - Preview production build
 - `npm run lint` - Run ESLint
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 luggage-carousel/
@@ -67,7 +66,7 @@ luggage-carousel/
 ├── vite.config.ts
 └── README.md
 ```
-## 📋 Business Logic & Assumptions
+## Business Logic & Assumptions
 
 ### Core Assumptions
 
@@ -104,14 +103,14 @@ Unload Order:
 2. Then empty regular stack (LIFO)
 ```
 
-## ❓ Known Unknowns & Edge Cases
+## Known Unknowns & Edge Cases
 
 ### Drag & Drop Behavior
 - **Unknown**: What happens when user drops luggage outside the application window?
 - **Current**: luggage will animate back to the carousel
 ... more :)
 
-## 🔧 Technical Details
+## Technical Details
 ### Key Technologies
 - **React 18** with TypeScript
 - **Vite** for build tooling and dev server
