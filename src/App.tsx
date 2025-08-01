@@ -9,12 +9,12 @@ function App() {
 
   return (
     <div className="app">
+      <Toast 
+        message={toast.message}
+        isVisible={toast.isVisible}
+        onClose={toast.hideToast}
+      />
       <div className="outer-box">
-        <Toast 
-          message={toast.message}
-          isVisible={toast.isVisible}
-          onClose={toast.hideToast}
-        />
         <h1>Luggage Carousel</h1>
         <div className="main-container">
           <LuggageCarousel 
