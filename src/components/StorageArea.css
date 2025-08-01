@@ -1,0 +1,34 @@
+.storage-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+.storage-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 12px;
+  padding: 2rem;
+  border: 3px solid #000;
+  background-color: #fff;
+  border-radius: 5px;
+  max-width: 400px;
+}
+
+.unload-button {
+  background-color: #000;
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.2s;
+}
+
+.unload-button:hover {
+  background-color: #333;
+}
