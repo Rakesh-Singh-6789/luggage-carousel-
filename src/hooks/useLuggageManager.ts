@@ -56,7 +56,7 @@ export const useLuggageManager = () => {
     // Check if slot is already occupied
     if (storedPackages[slotIndex] !== null) {
       const occupiedByPackage = storedPackages[slotIndex]
-      toast.showToast(`Storage box already occupied by package ${occupiedByPackage}`)
+      toast.showToast(`Storage box already occupied by luggage ${occupiedByPackage}`)
       return
     }
 
@@ -73,11 +73,11 @@ export const useLuggageManager = () => {
     if (slotIndex >= 0 && slotIndex <= 2) {
       setPriorityStack(prev => [...prev, packageId])
       console.log('pushed to priority stack:', [...priorityStack, packageId])
-      toast.showToast(`Package ${packageId} stored in priority section`)
+      toast.showToast(`Luggage ${packageId} stored in priority section`)
     } else {
       setRegularStack(prev => [...prev, packageId])
       console.log('pushed to regular stack:', [...regularStack, packageId])
-      toast.showToast(`Package ${packageId} stored successfully`)
+      toast.showToast(`Luggage ${packageId} stored successfully`)
     }
     
     carouselRef.current?.removePackage(packageId)
