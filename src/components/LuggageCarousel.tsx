@@ -1,16 +1,49 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, forwardRef, useImperativeHandle } from 'react'
 import Package from './Package'
+import type { DragItem, DragResult } from '../types/dragTypes'
 import './LuggageCarousel.css'
 
 interface PackageData {
   id: string
   position: number
   type: 'luggage'
+  isHidden?: boolean
 }
 
-const LuggageCarousel = () => {
+interface LuggageCarouselProps {
+  onPackageDragStart?: (item: DragItem) => void
+  onPackageDragEnd?: (result: DragResult, item: DragItem) => void
+}
+
+interface LuggageCarouselHandle {
+  removePackage: (packageId: string) => void
+  hidePackage: (packageId: string) => void
+  showPackage: (packageId: string) => void
+}
+
+const LuggageCarousel = forwardRef<LuggageCarouselHandle, LuggageCarouselProps>(({ onPackageDragStart, onPackageDragEnd }, ref) => {
   const [packages, setPackages] = useState<PackageData[]>([])
   const [nextId, setNextId] = useState(1)
+
+  // Expose package management methods to parent
+  useImperativeHandle(ref, () => ({
+    removePackage: (packageId: string) => {
+      console.log(`remove pkg: ${packageId}`)
+      setPackages(prev => prev.filter(p => p.id !== packageId))
+    },
+    hidePackage: (packageId: string) => {
+      console.log(`hide pkg: ${packageId}`)
+      setPackages(prev => prev.map(p => 
+        p.id === packageId ? { ...p, isHidden: true } : p
+      ))
+    },
+    showPackage: (packageId: string) => {
+      console.log(`show pkg: ${packageId}`)
+      setPackages(prev => prev.map(p => 
+        p.id === packageId ? { ...p, isHidden: false } : p
+      ))
+    }
+  }))
 
   // Animation loop - move packages from left to right (30 FPS)
   useEffect(() => {
@@ -42,14 +75,14 @@ const LuggageCarousel = () => {
       setPackages(prevPackages => [
         ...prevPackages,
         {
-          id: `package-${nextId}`,
+          id: `${nextId}`, // Simple numbering: 1, 2, 3, 4...
           position: -60, // Start further off-screen to prevent stacking
           type: 'luggage' as const
         }
       ])
       
       setNextId(prev => prev + 1)
-    }, 2000) // New package every 2.5 seconds for better spacing
+    }, 1250) // New package every 1 seconds for better spacing
 
     return () => clearInterval(spawnInterval)
   }, [nextId])
@@ -63,11 +96,15 @@ const LuggageCarousel = () => {
             id={pkg.id}
             position={pkg.position}
             type={pkg.type}
+            isHidden={pkg.isHidden}
+            onDragStart={onPackageDragStart}
+            onDragEnd={onPackageDragEnd}
           />
         ))}
       </div>
     </div>
   )
-}
+})
+
 
 export default LuggageCarousel
