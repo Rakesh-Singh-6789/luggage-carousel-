@@ -4,22 +4,26 @@ import { useLuggageManager } from './hooks/useLuggageManager'
 import './App.css'
 
 function App() {
-  const { carouselRef, handlers } = useLuggageManager()
+  const { carouselRef, storedPackages, isUnloading, handlers } = useLuggageManager()
 
   return (
     <div className="app">
-      <h1>Luggage Carousel</h1>
-      <div className="main-container">
-        <LuggageCarousel 
-          ref={carouselRef}
-          onPackageDragStart={handlers.onPackageDragStart}
-          onPackageDragEnd={handlers.onPackageDragEnd}
-        />
-        <StorageArea 
+      <div className="outer-box">
+        <h1>Luggage Carousel</h1>
+        <div className="main-container">
+          <LuggageCarousel 
+            ref={carouselRef}
+            onPackageDragStart={handlers.onPackageDragStart}
+            onPackageDragEnd={handlers.onPackageDragEnd}
+          />
+                  <StorageArea 
+          storedPackages={storedPackages}
+          isUnloading={isUnloading}
           onPackageStored={handlers.onPackageStored}
           onDropSuccess={handlers.onDropSuccess}
           onUnload={handlers.onUnload} 
         />
+        </div>
       </div>
     </div>
   )

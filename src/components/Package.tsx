@@ -7,6 +7,7 @@ interface PackageProps {
   position: number
   type?: 'luggage'
   isHidden?: boolean
+  isExiting?: boolean
   onDragStart?: (item: DragItem) => void
   onDragEnd?: (result: DragResult, item: DragItem) => void
 }
@@ -16,6 +17,7 @@ const Package = ({
   position, 
   type = 'luggage', 
   isHidden = false,
+  isExiting = false,
   onDragStart, 
   onDragEnd 
 }: PackageProps) => {
@@ -34,7 +36,7 @@ const Package = ({
 
   return (
     <div 
-      className={`package package-${type} ${isDragging ? 'dragging' : ''}`}
+      className={`package package-${type} ${isDragging ? 'dragging' : ''} ${isExiting ? 'exiting' : ''}`}
       style={{ left: `${position}px` }}
       {...dragHandlers}
       role="button"

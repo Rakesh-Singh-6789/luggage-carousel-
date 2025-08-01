@@ -1,11 +1,14 @@
 .carousel-section {
-  width: 100%;
+  width: calc(100% + 4rem); /* Extend beyond container */
+  margin: 0 -2rem; /* Negative margin to reach outer box edges */
+  padding: 0; /* No padding to touch the sides */
 }
 
 .carousel-section h2 {
   font-size: 1.5rem;
   margin-bottom: 1rem;
   color: #555;
+  padding: 0 2rem; /* Add padding only to the title */
 }
 
 .carousel-belt {
@@ -14,6 +17,9 @@
   background-color: #f8f8f8;
   position: relative;
   overflow: hidden;
-  border-radius: 5px;
+  border-radius: 0; /* Remove border radius to touch edges */
   box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+  width: 100%; /* Ensure belt spans full width */
+  border-left: none; /* Remove left border to touch edge */
+  border-right: none; /* Remove right border to touch edge */
 }

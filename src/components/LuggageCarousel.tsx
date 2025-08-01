@@ -8,6 +8,7 @@ interface PackageData {
   position: number
   type: 'luggage'
   isHidden?: boolean
+  isExiting?: boolean
 }
 
 interface LuggageCarouselProps {
@@ -54,11 +55,19 @@ const LuggageCarousel = forwardRef<LuggageCarouselHandle, LuggageCarouselProps>(
       if (currentTime - lastTime >= 33) { // 30 FPS = ~33ms per frame
         setPackages(prevPackages => 
           prevPackages
-            .map(pkg => ({
-              ...pkg,
-              position: pkg.position + 3 // Move 3px per frame for smoother motion
-            }))
-            .filter(pkg => pkg.position < 950) // Remove packages that go off screen
+            .map(pkg => {
+              const newPosition = pkg.position + 3 // Move 3px per frame for smoother motion
+              
+              // Mark packages as exiting when they reach the visible edge
+              const isExiting = newPosition >= 850 && !pkg.isExiting
+              
+              return {
+                ...pkg,
+                position: newPosition,
+                isExiting: isExiting || pkg.isExiting
+              }
+            })
+            .filter(pkg => pkg.position < 1100) // Remove packages well after they're off screen
         )
         lastTime = currentTime
       }
@@ -97,6 +106,7 @@ const LuggageCarousel = forwardRef<LuggageCarouselHandle, LuggageCarouselProps>(
             position={pkg.position}
             type={pkg.type}
             isHidden={pkg.isHidden}
+            isExiting={pkg.isExiting}
             onDragStart={onPackageDragStart}
             onDragEnd={onPackageDragEnd}
           />
